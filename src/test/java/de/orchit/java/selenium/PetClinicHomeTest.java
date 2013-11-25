@@ -46,8 +46,9 @@ public class PetClinicHomeTest {
     @Test
     public void createOwner() {
         driver.get("http://localhost:9966/petclinic?lang=en");
-        driver.findElement(By.linkText("Find owners")).click();
-        driver.findElement(By.linkText("Add Owner")).click();
+        WelcomePage welcomePage = new WelcomePage(driver);
+        final FindOwnerPage findOwnerPage = welcomePage.goToFindOwners();
+        findOwnerPage.goToAddOwner();
         driver.findElement(By.id("firstName")).clear();
         driver.findElement(By.id("firstName")).sendKeys("Hans");
         driver.findElement(By.id("lastName")).clear();
