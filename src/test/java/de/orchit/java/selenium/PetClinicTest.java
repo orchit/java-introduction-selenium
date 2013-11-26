@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PetClinicHomeTest {
+public class PetClinicTest {
     static WebDriver driver;
 
     @BeforeClass
@@ -48,18 +48,15 @@ public class PetClinicHomeTest {
         driver.get("http://localhost:9966/petclinic?lang=en");
         WelcomePage welcomePage = new WelcomePage(driver);
         final FindOwnerPage findOwnerPage = welcomePage.goToFindOwners();
-        findOwnerPage.goToAddOwner();
-        driver.findElement(By.id("firstName")).clear();
-        driver.findElement(By.id("firstName")).sendKeys("Hans");
-        driver.findElement(By.id("lastName")).clear();
-        driver.findElement(By.id("lastName")).sendKeys("Dampf");
-        driver.findElement(By.id("address")).clear();
-        driver.findElement(By.id("address")).sendKeys("HereStreet 42");
-        driver.findElement(By.id("city")).clear();
-        driver.findElement(By.id("city")).sendKeys("therecity");
-        driver.findElement(By.id("telephone")).clear();
-        driver.findElement(By.id("telephone")).sendKeys("987654321");
-        driver.findElement(By.cssSelector("button[type=\"submit\"]")).click();
+        final AddOwnerPage page = findOwnerPage.goToAddOwner();
+
+        page.setFirstName("Hans");
+        page.setLastName("Dampf");
+        page.setAddress("HereStreet 42");
+        page.setCity("therecity");
+        page.setTelephone("987654321");
+        page.submit();
+
         assertEquals("Hans Dampf", driver.findElement(By.cssSelector("b")).getText());
         assertEquals("HereStreet 42", driver.findElement(By.xpath("//tr[2]/td")).getText());
         assertEquals("therecity", driver.findElement(By.xpath("//tr[3]/td")).getText());

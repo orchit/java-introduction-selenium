@@ -14,7 +14,9 @@ public class FindOwnerPage {
 
     }
 
-    public void goToAddOwner() {
+    public AddOwnerPage goToAddOwner() {
         driver.findElement(By.linkText("Add Owner")).click();
+        AddOwnerPage page = new AddOwnerPage(driver);
+        return page;
     }
 }
