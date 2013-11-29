@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -47,6 +49,44 @@ public class GrouponFrontpageTest {
         driver.findElement(By.cssSelector("option[value=\"35\"]")).click();
         driver.findElement(By.id("index-search-button")).click();
         assertEquals("Schloss in Brandenburg", driver.findElement(By.cssSelector("h1")).getText());
+
+    }
+
+    @Test
+    public void createUser() throws InterruptedException {
+        driver.get(url + "/");
+        driver.findElement(By.id("jRegisterLink")).click();
+        new Select(driver.findElement(By.id("registerView.userAddress.gender"))).selectByVisibleText("Frau");
+        driver.findElement(By.id("registerView.userAddress.gender")).click();
+        driver.findElement(By.id("registerView.userAddress.firstName")).clear();
+        driver.findElement(By.id("registerView.userAddress.firstName")).sendKeys("Helmine");
+        driver.findElement(By.id("registerView.userAddress.lastName")).clear();
+        driver.findElement(By.id("registerView.userAddress.lastName")).sendKeys("Stranger");
+        driver.findElement(By.id("registerView.userAddress.street")).clear();
+        driver.findElement(By.id("registerView.userAddress.street")).sendKeys("SecretStreet");
+        driver.findElement(By.id("registerView.userAddress.streetNumber")).clear();
+        driver.findElement(By.id("registerView.userAddress.streetNumber")).sendKeys("23");
+        driver.findElement(By.id("registerView.userAddress.postalCode")).clear();
+        driver.findElement(By.id("registerView.userAddress.postalCode")).sendKeys("54321");
+        driver.findElement(By.id("registerView.userAddress.cityName")).clear();
+        driver.findElement(By.id("registerView.userAddress.cityName")).sendKeys("SecretCity");
+        driver.findElement(By.id("registerView.email")).clear();
+        driver.findElement(By.id("registerView.email")).sendKeys(UUID.randomUUID().toString() + "@example.com");
+        new Select(driver.findElement(By.id("birthDay"))).selectByVisibleText("19");
+        new Select(driver.findElement(By.id("birthMonth"))).selectByVisibleText("Februar");
+        new Select(driver.findElement(By.id("birthYear"))).selectByVisibleText("1968");
+        driver.findElement(By.id("registerView.password")).clear();
+        driver.findElement(By.id("registerView.password")).sendKeys("superSecret!");
+        driver.findElement(By.id("passwordRepeat")).clear();
+        driver.findElement(By.id("passwordRepeat")).sendKeys("superSecret!");
+        driver.findElement(By.id("newsletterSubscribe")).click();
+        driver.findElement(By.id("agbAccepted")).click();
+        driver.findElement(By.id("newsletterSubscribe")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.id("jSubmitRegistrationBtn")).click();
+
+        assertEquals("Helmine Stranger", driver.findElement(By.id("jUserArea")).getText());
+
 
     }
 }
