@@ -4,17 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 
-public class FindOwnersPage {
-    private final WebDriver driver;
-    private final String baseUrl;
+public class FindOwnersPage extends BasePage{
 
     public FindOwnersPage(WebDriver driver, String url) {
-        this.driver = driver;
-        baseUrl = url;
+        super(driver, url);
         driver.findElement(By.id("search-owner-form"));
     }
 
-    public void clickAddOwner() {
+    public AddOwnerPage clickAddOwner() {
         driver.findElement(By.linkText("Add Owner")).click();
+        return new AddOwnerPage(driver,baseUrl);
     }
 }

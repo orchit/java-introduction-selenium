@@ -1,16 +1,13 @@
 package de.orchit.java.selenium;
 
 
-import de.orchit.java.selenium.pageobjects.FindOwnersPage;
-import de.orchit.java.selenium.pageobjects.Homepage;
+import de.orchit.java.selenium.helper.TestPreparationHelper;
+import de.orchit.java.selenium.pageobjects.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
-import static org.junit.Assert.assertEquals;
 
 public class PetClinicHomeTest {
     static WebDriver driver;
@@ -48,25 +45,46 @@ public class PetClinicHomeTest {
     public void createOwner() {
         final Homepage homepage = new Homepage(driver, url);
         homepage.goToPage("en");
+
         final FindOwnersPage findOwnersPage = homepage.clickFindOwners();
 
-        findOwnersPage.clickAddOwner();
-        driver.findElement(By.id("firstName")).clear();
-        driver.findElement(By.id("firstName")).sendKeys("Hans");
-        driver.findElement(By.id("lastName")).clear();
-        driver.findElement(By.id("lastName")).sendKeys("Dampf");
-        driver.findElement(By.id("address")).clear();
-        driver.findElement(By.id("address")).sendKeys("HereStreet 42");
-        driver.findElement(By.id("city")).clear();
-        driver.findElement(By.id("city")).sendKeys("therecity");
-        driver.findElement(By.id("telephone")).clear();
-        driver.findElement(By.id("telephone")).sendKeys("987654321");
-        driver.findElement(By.cssSelector("button[type=\"submit\"]")).click();
-        assertEquals("Hans Dampf", driver.findElement(By.cssSelector("b")).getText());
-        assertEquals("HereStreet 42", driver.findElement(By.xpath("//tr[2]/td")).getText());
-        assertEquals("therecity", driver.findElement(By.xpath("//tr[3]/td")).getText());
-        assertEquals("987654321", driver.findElement(By.xpath("//tr[4]/td")).getText());
+        final AddOwnerPage addOwnerPage = findOwnersPage.clickAddOwner();
+
+        addOwnerPage.setFirstName("Hans");
+        addOwnerPage.setLastName("Dampf");
+        addOwnerPage.setAddress("Elm street");
+        addOwnerPage.setCity("thereCity");
+        addOwnerPage.setTelephone("987654321");
+
+        final OwnerInformationPage ownerInformationPage = addOwnerPage.clickSubmit();
+
+        ownerInformationPage.verifyName("Hans Dampf");
+        ownerInformationPage.verifyAddress("Elm Street");
+        ownerInformationPage.verifyCity("thereCity");
+        ownerInformationPage.verifyTelephone("987654321");
     }
+
+
+    @Test
+    public void createPet() {
+        final Homepage homepage = new Homepage(driver, url);
+        homepage.goToPage("en");
+
+        final OwnerInformationPage ownerInformationPage
+                = TestPreparationHelper.prepareOwner(homepage);
+
+        final AddNewPetPage addNewPetPage = ownerInformationPage.clickAddNewPet();
+
+        addNewPetPage.setName("Tweety");
+        addNewPetPage.setBirthDate("2011/11/01");
+        addNewPetPage.selectPetType("bird");
+        addNewPetPage.clickSubmit();
+
+        addNewPetPage.verifyPetInformation("Tweety", "2011-10-31", "bird");
+
+    }
+
+
 
 
 }
