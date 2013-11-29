@@ -1,16 +1,14 @@
 package de.orchit.java.selenium;
 
 
+import de.orchit.java.selenium.pageobjects.FindOwnersPage;
+import de.orchit.java.selenium.pageobjects.Homepage;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,25 +27,25 @@ public class PetClinicHomeTest {
 
     @Test
     public void checkHomepageForDE() {
-        driver.get("http://localhost:9966/petclinic?lang=de");
-        final List<WebElement> elements = driver.findElements(By.tagName("h2"));
-        Assert.assertEquals(1, elements.size());
-        Assert.assertEquals("Willkommen", elements.get(0).getText());
+        final Homepage homepage = new Homepage(driver, "http://localhost:9966");
+        homepage.goToPage("de");
+        homepage.checkWelcomeMessage("Willkommen");
     }
 
     @Test
     public void checkHomepageEN() {
-        driver.get("http://localhost:9966/petclinic?lang=en");
-        final List<WebElement> elements = driver.findElements(By.tagName("h2"));
-        Assert.assertEquals(1, elements.size());
-        Assert.assertEquals("Welcome", elements.get(0).getText());
+        final Homepage homepage = new Homepage(driver, "http://localhost:9966");
+        homepage.goToPage("en");
+        homepage.checkWelcomeMessage("Welcome");
     }
 
     @Test
     public void createOwner() {
-        driver.get("http://localhost:9966/petclinic?lang=en");
-        driver.findElement(By.linkText("Find owners")).click();
-        driver.findElement(By.linkText("Add Owner")).click();
+        final Homepage homepage = new Homepage(driver, "http://localhost:9966");
+        homepage.goToPage("en");
+        final FindOwnersPage findOwnersPage = homepage.clickFindOwners();
+
+        findOwnersPage.clickAddOwner();
         driver.findElement(By.id("firstName")).clear();
         driver.findElement(By.id("firstName")).sendKeys("Hans");
         driver.findElement(By.id("lastName")).clear();
