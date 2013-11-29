@@ -52,7 +52,7 @@ public class PetClinicHomeTest {
 
         addOwnerPage.setFirstName("Hans");
         addOwnerPage.setLastName("Dampf");
-        addOwnerPage.setAddress("Elm street");
+        addOwnerPage.setAddress("Elm Street");
         addOwnerPage.setCity("thereCity");
         addOwnerPage.setTelephone("987654321");
 
