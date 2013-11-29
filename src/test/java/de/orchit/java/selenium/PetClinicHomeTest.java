@@ -14,6 +14,11 @@ import static org.junit.Assert.assertEquals;
 
 public class PetClinicHomeTest {
     static WebDriver driver;
+    private final String url;
+
+    public PetClinicHomeTest() {
+        url = "http://10.100.10.122:9966";
+    }
 
     @BeforeClass
     public static void setup() {
@@ -27,21 +32,21 @@ public class PetClinicHomeTest {
 
     @Test
     public void checkHomepageForDE() {
-        final Homepage homepage = new Homepage(driver, "http://localhost:9966");
+        final Homepage homepage = new Homepage(driver, url);
         homepage.goToPage("de");
         homepage.checkWelcomeMessage("Willkommen");
     }
 
     @Test
     public void checkHomepageEN() {
-        final Homepage homepage = new Homepage(driver, "http://localhost:9966");
+        final Homepage homepage = new Homepage(driver, url);
         homepage.goToPage("en");
         homepage.checkWelcomeMessage("Welcome");
     }
 
     @Test
     public void createOwner() {
-        final Homepage homepage = new Homepage(driver, "http://localhost:9966");
+        final Homepage homepage = new Homepage(driver, url);
         homepage.goToPage("en");
         final FindOwnersPage findOwnersPage = homepage.clickFindOwners();
 
